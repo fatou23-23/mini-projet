@@ -1,21 +1,26 @@
 <?php
+ob_start(); 
 
-    include_once("header.php");
-    include_once("main.php");
+$clients=true;
+include_once("header.php");
+include_once("main.php");
 
-    if(!empty($_POST["inputnom"])&&!empty($_POST["inputville"])&&!empty($_POST["inputtel"])){
-        $query="INSERT INTO client (nom,ville,telephone) VALUES (:nom,:ville,:telephone)";
-        $pdostmt=$pdo->prepare($query);
-        $pdostmt->execute(["nom"=>$_POST["inputnom"],"ville"=>$_POST["inputville"],"telephone"=>$_POST["inputtel"]]);
-        $pdostmt->closecursor();
-        
-    
-      
-       
+if (!empty($_POST["inputnom"]) && !empty($_POST["inputville"]) && !empty($_POST["inputtel"])) {
+    $query = "INSERT INTO client (nom,ville,telephone) VALUES (:nom,:ville,:telephone)";
+    $pdostmt = $pdo->prepare($query);
+    $pdostmt->execute([
+        "nom" => $_POST["inputnom"],
+        "ville" => $_POST["inputville"],
+        "telephone" => $_POST["inputtel"]
+    ]);
+    $pdostmt->closeCursor();
+    header("Location:clients.php");
+    exit(); 
+}
 
-    }
-
+ob_end_flush();
 ?>
+
 
 <h1 class="mt-5">Ajouter un client</h1>
 
@@ -33,7 +38,6 @@
     <input type="text" class="form-control" id="inputtel" name="inputtel" required>
   </div>
   <div class="col-12">
-    <a href="clients.php"  class="btn btn-danger"> Retour </a>
     <button  type="submit" class="btn btn-primary"> Ajouter</button>
   </div>
 </form>

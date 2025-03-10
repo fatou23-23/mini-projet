@@ -1,29 +1,26 @@
 <?php
-    $article=true;
+    $client=true;
     include_once("header.php");
     include_once("main.php");
     $count=0;
     $list=[];
-    $query = "SELECT idclient FROM client WHERE idclient IN (SELECT idclient FROM ligne_commande WHERE  ligne_commande.idclient=client.idclient)";
-    $pdostmt=$pdo->prepare($query);
-    
-    foreach($pdostmt->fetchAll(PDO::FETCH_NUM) as $tabvalue){
-        foreach($tabvalue as $tabelements) {
-            $list[]=$tabelements;
-        }
-    }
-
    
-    
+    $query = "SELECT idclient FROM client WHERE idclient IN (SELECT idclient FROM commande WHERE commande.idclient = client.idclient)";
+    $pdostmt = $pdo->prepare($query);
+    $pdostmt->execute();
+    foreach ($pdostmt->fetchAll(PDO::FETCH_NUM) as $tabvalues) {
+        foreach ($tabvalues as $tabelements) {
+            $list[] = $tabelements;
+        }
+      } 
 ?>
-
-
     <h1 class="mt-5">Clients</h1>
-    <a href="addclient.php" class="btn btn-primary" style="float:right;margin-bottom:20px;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
-         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
-    </svg>
-    </a>
+    <a href="addclient.php"class="btn btn-primary" style="float:right;margin-bottom:20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+  </svg>
+</a>
     <?php
       $query = "SELECT * FROM client";
       $pdostmt = $pdo->prepare($query);
@@ -81,8 +78,6 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                 <a href="delete.php?id=<?php echo htmlspecialchars($Ligne["idclient"]); ?>" class="btn btn-danger">Supprimer</a>
-
-
               </div>
              </div>
             </div>
@@ -103,8 +98,6 @@
              <?php endwhile; ?>
        </tbody>
     </table>
-    
-    
   </div>
 </main>
 
